@@ -9,9 +9,9 @@ def load_buffer(input_data, start, buffer_size):
 def process_string(string, size):
     start = 0
     lexeme = ""
+    buffer = load_buffer(string, start, size)
 
-    while start < len(string):
-        buffer = load_buffer(string, start, size)
+    while True:
 
         for symbol in buffer:
             print(f"buffer: {start} {symbol}")
@@ -20,12 +20,17 @@ def process_string(string, size):
                 lexeme = ""
             else: 
                 lexeme += symbol
-                
+
+        if len(buffer) < size:
+            print(f"Lexeme processed: {lexeme}")
+            break
+
+        buffer = load_buffer(string, start, size)
+
         start += size
-    print(f"Lexeme processed: {lexeme}")
 
 
-input_data = "This is an example"
+input_data = "Esto es un ejemplo eof"
 start = 0
 buffer_size = 10
 process_string(input_data, buffer_size)
