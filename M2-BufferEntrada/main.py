@@ -1,9 +1,11 @@
 # Base code to start
 
+# Returns a buffer of fixed size from a string
 def load_buffer(input_data, start, buffer_size):
     buffer = input_data[start:start + buffer_size]
     return buffer
 
+# Processes a string using buffers
 def process_string(string, size):
     start = 0
     lexeme = ""
