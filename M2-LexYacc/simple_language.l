@@ -1,7 +1,9 @@
+
 %{
 #include <cstdlib>
 #include <string>
 #include "y.tab.h"
+
 %}
 
 %%
@@ -15,6 +17,7 @@
 "="                     { return '='; }
 ":"                     { return ':'; }
 [ \t]                   ;  // skip whitespace
+\n                      { ++yylineno; } // Increment line number on newline
 .|\n                    ; /* ignore all the rest */
 
 %%

@@ -2,8 +2,16 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <cstdio>
+
 static std::map<std::string, int> vars;
-inline void yyerror(const char *str) { printf("Error: %s\n", str); }
+
+// Error reporting function
+inline void yyerror(const char *str) {
+    extern int yylineno;  // Defined by Flex
+    fprintf(stderr, "Error: %s at line %d\n", str, yylineno);
+}
+
 int yylex();
 %}
 
@@ -30,8 +38,8 @@ statement_list: statement
 statement: assignment
     | expression ':'          { std::cout << $1 << std::endl; }
     | error ':' {
-        yyerror("Invalid Expresion!"); 
-        yyclearin; 
+        yyerror("Invalid expression!");
+        yyclearin;
     }
     ;
 
@@ -44,17 +52,17 @@ assignment: ID '=' expression
     ;
 
 expression: NUMBER                  { $$ = $1; }
-    | ID                            { $$ = vars[*$1];      delete $1; }
+    | ID                            { $$ = vars[*$1]; delete $1; }
     | expression '+' expression     { $$ = $1 + $3; }
     | expression '-' expression     { $$ = $1 - $3; }
     | expression '*' expression     { $$ = $1 * $3; }
     | expression '/' expression     { 
-      if ($3 == 0){
-        yyerror("Cannot divide by zero");
-        $$ = 0;
-      } else {
-        $$ = $1 / $3; 
-      }
+        if ($3 == 0) {
+            yyerror("Cannot divide by zero");
+            $$ = 0;
+        } else {
+            $$ = $1 / $3; 
+        }
     }
     ;
 
